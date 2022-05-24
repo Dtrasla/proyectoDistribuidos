@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.text.SimpleDateFormat;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -60,6 +61,7 @@ public class Publisher
 				double valor = 0;
 				probabilidad = srandom.nextInt(10) + 1;
 				if(probabilidad <= (int) correcto ){
+//					System.out.println("Correcto " + probabilidad);
 					switch (tipo){
 						case "t":
 							valor = (double)srandom.nextInt(89 - 68 + 1) + 68;
@@ -76,6 +78,7 @@ public class Publisher
 					}
 				}
 				else if( probabilidad <= (int)(correcto + frango)){
+//					System.out.println("Fuera " + probabilidad);
 					switch (tipo){
 						case "t":
 							valor = (double)srandom.nextInt(89 - 68 + 1) + 68;
@@ -95,6 +98,8 @@ public class Publisher
 					}
 				}
 				else{
+//					System.out.println("Error " + probabilidad);
+
 					switch (tipo){
 						case "t":
 							valor = (double)srandom.nextInt(89 - 68 + 1) + 68;
@@ -113,8 +118,9 @@ public class Publisher
 							break;
 					}
 				}
+				String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new java.util.Date());
 				String update = String.format(
-						"%s %2.1f ", tipo, valor
+						"%s %2.1f %s", tipo, valor, timeStamp
 				);
 				System.out.println(update);
 				publisher.send(update,0);

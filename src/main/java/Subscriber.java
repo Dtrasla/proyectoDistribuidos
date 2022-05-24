@@ -1,3 +1,5 @@
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Random;
 
@@ -6,6 +8,7 @@ import java.util.StringTokenizer;
 import org.zeromq.SocketType;
 import org.zeromq.ZMQ;
 import org.zeromq.ZContext;
+import zmq.ZError;
 
 public class Subscriber {
 	public static void main(String[] args) throws Exception {
@@ -36,6 +39,21 @@ public class Subscriber {
 				StringTokenizer sscanf = new StringTokenizer(string, " ");
 				String tp = String.valueOf(sscanf.nextToken());
 				double valor = Double.valueOf(sscanf.nextToken());
+
+
+				if(valor >= 0){
+					String ruta = "src/main/resources/correctos.txt";
+					try{
+						FileWriter fstream = new FileWriter(ruta,true);
+						BufferedWriter out = new BufferedWriter(fstream);
+						out.write(string + "\n");
+						out.close();
+					}
+					catch (ZError.IOException e){
+						System.out.println("Ha ocurrido un error. ");
+						e.printStackTrace();
+					}
+				}
 			}
 		}
 	}
