@@ -42,7 +42,7 @@ public class Subscriber {
 
 
 				if(valor >= 0){
-					String ruta = "src/main/resources/correctos.txt";
+					String ruta = "src/main/resources/bd.txt";
 					try{
 						FileWriter fstream = new FileWriter(ruta,true);
 						BufferedWriter out = new BufferedWriter(fstream);
