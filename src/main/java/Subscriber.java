@@ -11,6 +11,13 @@ import org.zeromq.ZContext;
 import zmq.ZError;
 
 public class Subscriber {
+	public static final int MIN_PH = 6;
+	public static final int MAX_PH = 8;
+	public static final int MIN_TMP = 68;
+	public static final int MAX_TMP = 89;
+	public static final int MIN_OX = 2;
+	public static final int MAX_OX = 11;
+
 	public static void main(String[] args) throws Exception {
 		try (ZContext context = new ZContext()) {
 			String tipo = args[0];
@@ -33,6 +40,12 @@ public class Subscriber {
 			subscriber.subscribe(filter.getBytes(ZMQ.CHARSET));
 			int update_nbr;
 			long total_temp = 0;
+
+			ZMQ.Socket alertas = context.createSocket(SocketType.PUSH);
+			alertas.connect("tcp://localhost:5560");
+
+
+
 			for (update_nbr = 0; update_nbr < 100; update_nbr++) {
 				String string = subscriber.recvStr().trim();
 				System.out.println(string);
@@ -54,6 +67,21 @@ public class Subscriber {
 						e.printStackTrace();
 					}
 				}
+				if(valor<0){}
+
+
+				else if(tp.equals("p")  && (valor < MIN_PH || valor > MAX_PH) ) {
+					alertas.send(string);
+				}
+
+				else if(tp.equals("o")  && (valor < MIN_OX || valor > MAX_OX) ) {
+					alertas.send(string);
+				}
+
+				else if(tp.equals("t")  && (valor < MIN_TMP || valor > MAX_TMP) ) {
+					alertas.send(string);
+				}
+
 			}
 		}
 	}
