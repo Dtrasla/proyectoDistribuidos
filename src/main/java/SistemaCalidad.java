@@ -49,8 +49,14 @@ public class SistemaCalidad {
 
                     if (!contra.isEmpty() && !usuario.isEmpty()) {
                         contraHash = generarHash(contra);
-                        sis.usuarios.put(usuario, contraHash);
-                        System.out.println(sis.usuarios.get(usuario));
+                        if(sis.usuarios.get(usuario) != null ){
+                            System.out.println("El usuario ya existe");
+                        }
+                        else{
+                            sis.usuarios.put(usuario, contraHash);
+                            System.out.println(sis.usuarios.get(usuario));
+                        }
+
 
 //                            sis.usuarioFinal = usuario;
 //                            sis.contraFinal = contraHash;
@@ -76,12 +82,15 @@ public class SistemaCalidad {
                     if(sis.usuarios.get(usuario) != null){
                         if (sis.usuarios.get(usuario).equals(comparar)){
                                 sis.calidad();
-                            }
+                        }
+                        else{
+                            System.out.println("Credenciales Invalidas");
+                        }
                     }
                     else {
                         System.out.println("Credenciales Invalidas");
                     }
-                    System.out.println(sis.usuarios.get(usuario));
+//                    System.out.println(sis.usuarios.get(usuario));
 
 
 
