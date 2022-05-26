@@ -7,6 +7,7 @@ import java.util.Scanner;
 import org.zeromq.SocketType;
 import org.zeromq.ZMQ;
 import org.zeromq.ZContext;
+import org.zeromq.ZMQException;
 
 public class Publisher
 {
@@ -19,17 +20,55 @@ public class Publisher
 			String tipo = args[0];
 			String tiempo = args[1];
 			String archivo = "src\\main\\java\\" + args[2];
+			boolean ocupado = false;
 			switch (tipo){
 				case "t":
-					publisher.bind("tcp://26.240.17.231:5556");
+					try{
+						publisher.bind("tcp://26.240.17.231:5554");
+
+					}catch (ZMQException e){
+						ocupado = true;
+
+					}
+					finally{
+						if(ocupado){
+							publisher.bind("tcp://26.240.17.231:5555");
+						}
+					}
+
+
+					//publisher.bind("tcp://26.240.17.231:5556");
 					break;
 				case "p":
-					publisher.bind("tcp://26.240.17.231:5557");
-					break;
+					try{
+						publisher.bind("tcp://26.240.17.231:5556");
+
+					}catch (ZMQException e){
+						ocupado = true;
+
+					}
+					finally{
+						if(ocupado){
+							publisher.bind("tcp://26.240.17.231:5557");
+						}
+					}
 				case "o":
-					publisher.bind("tcp://26.240.17.231:5558");
+					try{
+						publisher.bind("tcp://26.240.17.231:5558");
+
+					}catch (ZMQException e){
+						ocupado = true;
+
+					}
+					finally{
+						if(ocupado){
+							publisher.bind("tcp://26.240.17.231:5559");
+						}
+					}
 					break;
 			}
+
+
 			int t = Integer.parseInt(tiempo);
 			//Lectura de archivo
 			double correcto = 0, frango = 0, err = 0;

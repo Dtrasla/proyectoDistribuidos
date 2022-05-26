@@ -27,13 +27,18 @@ public class Subscriber {
 			// Socket conectado al puerto
 			switch (tipo){
 				case "t":
-					subscriber.connect("tcp://26.240.17.231:5556");
+					subscriber.connect("tcp://26.240.17.231:5554");
+					subscriber.connect("tcp://26.240.17.231:5555");
 					break;
 				case "p":
+					subscriber.connect("tcp://26.240.17.231:5556");
+
 					subscriber.connect("tcp://26.240.17.231:5557");
 					break;
 				case "o":
 					subscriber.connect("tcp://26.240.17.231:5558");
+					subscriber.connect("tcp://26.240.17.231:5559");
+
 					break;
 			}
 			String filter = tipo;
