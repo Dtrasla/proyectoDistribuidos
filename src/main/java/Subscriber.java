@@ -46,7 +46,7 @@ public class Subscriber {
 
 
 
-			for (update_nbr = 0; update_nbr < 100; update_nbr++) {
+			for (update_nbr = 0; update_nbr < 10000; update_nbr++) {
 				String string = subscriber.recvStr().trim();
 				System.out.println(string);
 				StringTokenizer sscanf = new StringTokenizer(string, " ");
@@ -70,7 +70,7 @@ public class Subscriber {
 				if(valor<0){}
 
 
-				else if(tp.equals("p")  && (valor < MIN_PH || valor > MAX_PH) ) {
+				else if(tp.equals("p")  && (valor <= MIN_PH || valor > MAX_PH) ) {
 					alertas.send(string);
 				}
 

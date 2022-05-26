@@ -21,13 +21,13 @@ public class Publisher
 			String archivo = "src\\main\\java\\" + args[2];
 			switch (tipo){
 				case "t":
-					publisher.bind("tcp://*:5556");
+					publisher.bind("tcp://26.240.17.231:5556");
 					break;
 				case "p":
-					publisher.bind("tcp://*:5557");
+					publisher.bind("tcp://26.240.17.231:5557");
 					break;
 				case "o":
-					publisher.bind("tcp://*:5558");
+					publisher.bind("tcp://26.240.17.231:5558");
 					break;
 			}
 			int t = Integer.parseInt(tiempo);
