@@ -4,21 +4,24 @@ import org.zeromq.ZMQ;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.Scanner;
 
-/*TODO
-*  Hacer lo de registro de usuario e inicio*/
+
+
 
 public class SistemaCalidad {
     SistemaCalidad(){}
     private String  usuarioFinal;
     private String  contraFinal;
+    Dictionary usuarios = new Hashtable();
 
     public static void main(String[] args) throws Exception {
 
         SistemaCalidad sis = new SistemaCalidad();
 
-        boolean usuarioCreado = false;
+//        boolean usuarioCreado = false;
         boolean inicio = false;
         Scanner sc = new Scanner(System.in);
 
@@ -34,30 +37,32 @@ public class SistemaCalidad {
 
 
             switch(op){
-                case '1':
-                    if(!usuarioCreado){
-                        String usuario = "";
-                        String contra = "";
+                case '1': {
+                    String usuario = "";
+                    String contra = "";
 
-                        System.out.println("*******CREACION DE CUENTA*********");
-                        System.out.println("ingrese el nombre de usuario");
-                        usuario = sc.nextLine();
-                        System.out.println("ingrese la contraseña");
-                        contra = sc.nextLine();
+                    System.out.println("*******CREACION DE CUENTA*********");
+                    System.out.println("ingrese el nombre de usuario");
+                    usuario = sc.nextLine();
+                    System.out.println("ingrese la contraseña");
+                    contra = sc.nextLine();
+
+                    if (!contra.isEmpty() && !usuario.isEmpty()) {
                         contraHash = generarHash(contra);
+                        sis.usuarios.put(usuario, contraHash);
+                        System.out.println(sis.usuarios.get(usuario));
 
-                        usuarioCreado = true;
-                        sis.usuarioFinal = usuario;
-                        sis.contraFinal = contraHash;
+//                            sis.usuarioFinal = usuario;
+//                            sis.contraFinal = contraHash;
+
+
+                    } else {
+                        System.out.println("No se pueden tener datos vacios");
                     }
-                    else{
-                        System.out.println("Ya se ha creado un usuario, no insista");
-                    }
-
-
                     break;
+                }
 
-                case '2':
+                case '2': {
                     String usuario = "";
                     String contra = "";
                     String comparar = "";
@@ -67,17 +72,27 @@ public class SistemaCalidad {
                     System.out.println("ingrese la contraseña");
                     contra = sc.nextLine();
                     comparar = generarHash(contra);
-                    if(comparar.equals(sis.contraFinal) && sis.usuarioFinal.equals(usuario)){
-                        sis.calidad();
+
+                    if(sis.usuarios.get(usuario) != null){
+                        if (sis.usuarios.get(usuario).equals(comparar)){
+                                sis.calidad();
+                            }
                     }
+                    else {
+                        System.out.println("Credenciales Invalidas");
+                    }
+                    System.out.println(sis.usuarios.get(usuario));
+
+
 
 
                     break;
+                }
 
-                default:
+                default: {
                     System.out.println("Opcion Invalida");
                     break;
-
+                }
             }
 
 
@@ -120,10 +135,11 @@ public class SistemaCalidad {
 
 
     public void calidad(){
+        System.out.println("Recibiendo respuestas de los monitores");
         try (ZContext context = new ZContext()) {
 
             ZMQ.Socket pull = context.createSocket(SocketType.PULL);
-            pull.bind("tcp://localhost:5560");
+            pull.bind("tcp://26.240.17.231:5560");
 
             String alerta;
             while (!Thread.currentThread().isInterrupted()) {
